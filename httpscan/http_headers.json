@@ -1,0 +1,12 @@
+[
+    "referer: https://www.google.com/",
+    "upgrade-insecure-requests: 1",
+    "dnt: 1",
+    "cookie: _ga=GA1.2.18171718.1555391700; _gid=GA1.2.18171718.1555391700",
+    "cache-control: no-cache",
+    "path: /",
+    "accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+    "accept-encoding: gzip, deflate, br",
+    "accept-language: en-US,en;q=0.9",
+    "scheme: //scheme//"
+]
