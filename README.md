@@ -2,6 +2,9 @@
  
 ### Scan a host for open HTTP ports and gain information about the services present.
 
+### Setup:
+
+> `pip -r requirements.txt`
 ### Usage:
 
 ```
