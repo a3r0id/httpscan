@@ -8,6 +8,8 @@ from threading import Thread, Lock
 from time import sleep, time
 import argparse
 from colorama import Fore, Style, init
+from htmlparser import parseHTML
+
 
 BLOCK = "██████"
 
@@ -95,47 +97,59 @@ def get_from_headers(key, headers):
     return None
 
 def parse_http_response(string):
-    if 'HTTP/1.1' in string:
-        try:
-            status_line = string.split('HTTP/1.1')[1].split('\r\n')[0]
-            status_code = int(status_line.split(' ')[1])
-            status_desc = status_line.split()[1] + status_line.split( status_line.split()[1] )[1]
+    if 'HTTP/1.1' in string.upper():
+        status_line = string.split('HTTP/1.1')[1].split('\r\n')[0]
+        status_code = int(status_line.split(' ')[1])
+        status_desc = status_line.split()[1] + status_line.split( status_line.split()[1] )[1]
+        
+        headers     = []
+        for header in string.split('\r\n')[1:]:
+            if ':' in header and '\r\n' not in header:
+                headers.append([header.split(':')[0], header.split(':', 1)[1].strip()])
+        
+        notes = ""
+        if get_from_headers('Server', headers):
+            notes += '\n> Server: ' + get_from_headers('Server', headers)
             
-            headers     = []
-            for header in string.split('\r\n')[1:]:
-                if ':' in header and '\r\n' not in header:
-                    headers.append([header.split(':')[0], header.split(':', 1)[1].strip()])
+        if get_from_headers('X-Powered-By', headers):
+            notes += '\n> X-Powered-By: ' + get_from_headers('X-Powered-By', headers)
             
-            notes = ""
-            if get_from_headers('Server', headers):
-                notes += '\n> Server: ' + get_from_headers('Server', headers)
-                
-            if get_from_headers('X-Powered-By', headers):
-                notes += '\n> X-Powered-By: ' + get_from_headers('X-Powered-By', headers)
-                
-            if get_from_headers('X-AspNet-Version', headers):
-                notes += '\n> X-AspNet-Version: ' + get_from_headers('X-AspNet-Version', headers)
-                
-            body = string.split('\r\n\r\n')[1]
-                
-            return dict(
-                status_code=status_code,
-                status_desc=status_desc,
-                headers = headers,
-                body=body,
-                notes=notes
-            )            
+        if get_from_headers('X-AspNet-Version', headers):
+            notes += '\n> X-AspNet-Version: ' + get_from_headers('X-AspNet-Version', headers)
             
-        except Exception as e:
-            return dict(
-                status_code=0,
-                status_desc="Error While Parsing HTTP response",
-                headers = [],
-                error=str(e)
-            )            
+        if get_from_headers('Content-Length', headers):
+            notes += '\n> Content-Length: ' + get_from_headers('Content-Length', headers)         
+            
+        if get_from_headers('Location', headers):
+            notes += '\n> Location: ' + get_from_headers('Location', headers)         
+                        
+        body = string.split('\r\n\r\n')[1]
+        
+        if '<html>' in body.lower():
+            other_notes = '\n> '.join(parseHTML(body))
+            notes += '\n> ' + other_notes
+            
+        return dict(
+            status_code=status_code,
+            status_desc=status_desc,
+            headers = headers,
+            body=body,
+            notes=notes
+        )            
+                      
 
     else:
-        return None
+        print("\n\n\nODD RESPONSE:\n")
+        print(string)
+        print("\n\n\n")
+            
+        return dict(
+            status_code=0,
+            status_desc="unknown",
+            headers = [],
+            body="",
+            notes=["Non-HTTP response"]
+        )       
 
 def format_http(port):
     
@@ -189,37 +203,42 @@ def scan():
     if Opts.threads > len(Ports.pooled) / 4: #sanity check
         raise OverflowError(f'[-] Cannot use more than {round(len(Ports.pooled) / 4)} threads (rounded) against your current total of {len(Ports.pooled)} ports. (total ports / 4)')
     
-    def thread_worker():
+    def thread_worker(thread_id):
         
-        while len( Ports.pooled ) > 0:
+        try:
             
-            Threads.lock.acquire()
-            try:
-                port = Ports.pooled.pop()
-            except: # if we pop from an empty list OR if two threads are trying to pop at the same time (which theoretically should never happen but logically COULD)
+            while len( Ports.pooled ) > 0:
+                
+                Threads.lock.acquire()
+                try:
+                    port = Ports.pooled.pop()
+                except: # if we pop from an empty list OR if two threads are trying to pop at the same time (which theoretically should never happen but logically COULD)
+                    Threads.lock.release()
+                    continue
+                
                 Threads.lock.release()
-                continue
-            
-            Threads.lock.release()
-            result = try_port(port)
-            
-            if Opts.all:
-                Ports.results.append(result)
-                if not Opts.json:
-                    Threads.lock.acquire()
-                    print_result(result)
-                    Threads.lock.release()      
-                    
-            else:
-                if result['status'] == 'open':
+                result = try_port(port)
+                
+                if Opts.all:
                     Ports.results.append(result)
                     if not Opts.json:
                         Threads.lock.acquire()
                         print_result(result)
-                        Threads.lock.release()  
+                        Threads.lock.release()      
+                        
+                else:
+                    if result['status'] == 'open':
+                        Ports.results.append(result)
+                        if not Opts.json:
+                            Threads.lock.acquire()
+                            print_result(result)
+                            Threads.lock.release()  
+                            
+        except (KeyboardInterrupt, SystemExit):
+            print(f"\n[-] Thread {thread_id} Exiting...")
                                 
-    for _ in range(Opts.threads):                        
-        Threads.pool.append(Thread(target=thread_worker))
+    for i in range(Opts.threads):                        
+        Threads.pool.append(Thread(target=thread_worker, args=(i,)))
         
     i = 0.1
     for t in Threads.pool:
@@ -228,18 +247,22 @@ def scan():
         i += 0.3
         
     while True:
-        if Threads.allDead():
-            if Opts.json:
-                if Opts.all:
-                    print(dumps(Ports.results))  
-                else:
-                    open_ports = []
-                    for result in Ports.results:
-                        if result['status'] == 'open':
-                            open_ports.append(result)    
-                    print(dumps(open_ports))    
-            break
-        sleep(0.1)
+        try:
+            if Threads.allDead():
+                if Opts.json:
+                    if Opts.all:
+                        print(dumps(Ports.results))  
+                    else:
+                        open_ports = []
+                        for result in Ports.results:
+                            if result['status'] == 'open':
+                                open_ports.append(result)    
+                        print(dumps(open_ports))    
+                break
+            sleep(0.1)            
+        except (KeyboardInterrupt, SystemExit):
+            print("\n[-] Exiting...")
+
     
 def try_port(port):
     closed = {'port': port, 'status': 'closed', 'status_code': None, 'data': None, 'error': ''}  
@@ -308,7 +331,7 @@ def print_result(port):
                 
     else:
         print(Fore.RED + BLOCK + ' ' + str(port['port']) + ' ' + BLOCK)
-        print("\n[+] No services on port " + str(port['port']) + '.')
+        print("\n[-] No services on port " + str(port['port']) + '.')
         print("[i] Error: {}".format(port['error'] + Style.RESET_ALL if 'error' in port else 'Unknown' + Style.RESET_ALL))
         
 if __name__ == '__main__':
