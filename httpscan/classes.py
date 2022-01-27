@@ -81,6 +81,9 @@ class Threads:
 class Services:
     service_tags = None
     
+class Strings:
+    block = "██████"
+    logo  = ""
+    
 with open('httpscan/resources/service_tags.json', 'r') as f:
     Services.service_tags = load(f)
-    

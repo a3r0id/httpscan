@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from classes import Opts
+from classes import Opts, Strings
 from scanner import scan
 
 import argparse
@@ -8,6 +8,7 @@ from colorama import init, Fore, Style
 init()
 
 if __name__ == '__main__':
+
     argp = argparse.ArgumentParser(
         description='Scan a host for open HTTP ports and gain information about the services present.',
         epilog='Example: python3 httpscan.py example.com | python3 httpscan.py -h')
@@ -37,11 +38,10 @@ if __name__ == '__main__':
     Opts.setArgs(args)
     
     if not Opts.json:
-        print(Fore.GREEN)
         with open('httpscan/resources/httpscan.logo', 'r') as f:
-            print(f.read())
-        print(Style.RESET_ALL)        
-        
+            Strings.logo = Fore.GREEN + f.read() + Style.RESET_ALL
+        print(Strings.logo)
+   
     scan()
 
     

@@ -1,13 +1,11 @@
 from colorama import Fore, Style
 
-from classes import Opts
-
-BLOCK = "██████"
+from classes import Opts, Strings
 
 def print_result(port):
     print(Style.RESET_ALL)
     if port['status'] == 'open':
-        print(Fore.GREEN + BLOCK + ' ' + str(port['port']) + ' ' + BLOCK + Style.RESET_ALL)
+        print(Fore.GREEN + Strings.block + ' ' + str(port['port']) + ' ' + Strings.block + Style.RESET_ALL)
         print("\n[+] Port " + str(port['port']) + " has a service running!")
         print("[i] Status code: {}".format(port['status_parsed']['status_code']))
         print("[i] Status description: {}".format(port['status_parsed']['status_desc']))
@@ -29,12 +27,12 @@ def print_result(port):
     
     
     elif port['status'] == 'open - no response':
-        print(Fore.BLUE + BLOCK + ' ' + str(port['port']) + ' ' + BLOCK)
+        print(Fore.BLUE + Strings.block + ' ' + str(port['port']) + ' ' + Strings.block)
         print("\n[+] Port " + str(port['port']) + " seems to be open,\nsocket was established but did not receive any data within the allowed response timeout or the socket was closed by the remote machine.")
         print("[i] Error: {}".format(port['error'] + Style.RESET_ALL if 'error' in port else 'Unknown' + Style.RESET_ALL))        
                 
     else:
-        print(Fore.RED + BLOCK + ' ' + str(port['port']) + ' ' + BLOCK)
+        print(Fore.RED + Strings.block + ' ' + str(port['port']) + ' ' + Strings.block)
         print("\n[-] No services on port " + str(port['port']) + '.')
         print("[i] Error: {}".format(port['error'] + Style.RESET_ALL if 'error' in port else 'Unknown' + Style.RESET_ALL))
         
