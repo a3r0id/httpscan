@@ -38,7 +38,7 @@ def scan():
                         Threads.lock.release()      
                         
                 else:
-                    if result['status'] == 'open':
+                    if result['status'].startswith('open'):
                         Ports.results.append(result)
                         if not Opts.json:
                             Threads.lock.acquire()

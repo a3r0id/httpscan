@@ -18,7 +18,7 @@ def parseHTML(html):
         
     notes.append(f"Hrefs: {dumps(hrefs, default=str)}")
     
-    notes.append(f"\"{title}\".")
+    notes.append(f"Page Title: \"{title}\".")
         
         
     

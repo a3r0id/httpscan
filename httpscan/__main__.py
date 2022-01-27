@@ -3,7 +3,7 @@ from classes import Opts
 from scanner import scan
 
 import argparse
-from colorama import init
+from colorama import init, Fore, Style
 
 init()
 
@@ -35,7 +35,13 @@ if __name__ == '__main__':
     args, leftovers = argp.parse_known_args()
     
     Opts.setArgs(args)
-
+    
+    if not Opts.json:
+        print(Fore.GREEN)
+        with open('httpscan/resources/httpscan.logo', 'r') as f:
+            print(f.read())
+        print(Style.RESET_ALL)        
+        
     scan()
 
     

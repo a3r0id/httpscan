@@ -77,3 +77,10 @@ class Threads:
                 return False 
         return True
     lock = Lock()
+    
+class Services:
+    service_tags = None
+    
+with open('httpscan/resources/service_tags.json', 'r') as f:
+    Services.service_tags = load(f)
+    

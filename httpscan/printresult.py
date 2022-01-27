@@ -28,7 +28,7 @@ def print_result(port):
                 print(Fore.YELLOW + "\nBody:\n[" + Fore.RED + "Error" + Style.RESET_ALL + Fore.YELLOW + "]: " + Style.RESET_ALL + "{}".format(e) + "\n")
     
     
-    elif port['status'] == 'Open - no response':
+    elif port['status'] == 'open - no response':
         print(Fore.BLUE + BLOCK + ' ' + str(port['port']) + ' ' + BLOCK)
         print("\n[+] Port " + str(port['port']) + " seems to be open,\nsocket was established but did not receive any data within the allowed response timeout or the socket was closed by the remote machine.")
         print("[i] Error: {}".format(port['error'] + Style.RESET_ALL if 'error' in port else 'Unknown' + Style.RESET_ALL))        

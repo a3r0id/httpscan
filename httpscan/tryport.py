@@ -29,7 +29,7 @@ def try_port(port):
                         s.close()
                     except Exception as e:
                         closed['error'] += '\n' + str(e)
-                    closed['status'] = 'Open - no response'
+                    closed['status'] = 'open - no response'
                     closed['error'] += '\nPort is open but no response.'
                 
             sleep(0.1)

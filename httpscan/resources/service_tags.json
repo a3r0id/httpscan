@@ -1,0 +1,266 @@
+{
+    "cloudflare":
+    {
+        "indicators": ["cloudflare"],
+        "name": "Cloudflare",
+        "description": "Cloudflare is a proxy service that provides a transparent layer of security and privacy for websites and applications."
+    },
+    "akamai":
+    {
+        "indicators": ["akamai"],
+        "name": "Akamai",
+        "description": "Akamai is a global provider of web hosting, content delivery networks, and CDN solutions."
+    },
+    "aws": 
+    {
+        "indicators": ["aws"],
+        "name": "Amazon Web Services",
+        "description": "Amazon Web Services is a cloud computing service that provides a scalable, reliable, and inexpensive web hosting platform."
+    },
+    "cloudfront":
+    {
+        "indicators": ["cloudfront"],
+        "name": "Amazon CloudFront",
+        "description": "Amazon CloudFront is a web service that provides a global content delivery network."
+    },
+    "gws":
+    {
+        "indicators": ["gws"],
+        "name": "Google Web Server",
+        "description": "Google Web Server is a web server that is provided by Google."
+    },
+    "nginx":
+    {
+        "indicators": ["nginx"],
+        "name": "Nginx",
+        "description": "Nginx is a web server and reverse proxy that is provided by Nginx."
+    },
+    "apache":
+    {
+        "indicators": ["apache"],
+        "name": "Apache",
+        "description": "Apache is a web server and reverse proxy that is provided by Apache."
+    },
+    "iis":
+    {
+        "indicators": ["iis"],
+        "name": "IIS",
+        "description": "IIS is a web server and reverse proxy that is provided by Microsoft."
+    },
+    "microsoft":
+    {
+        "indicators": ["microsoft"],
+        "name": "Microsoft",
+        "description": "Microsoft is a company that provides web hosting, web servers, and web applications."
+    },
+    "cloudfront-cdn":
+    {
+        "indicators": ["cloudfront-cdn"],
+        "name": "Amazon CloudFront CDN",
+        "description": "Amazon CloudFront is a web service that provides a global content delivery network."
+    },
+    "python":
+    {
+        "indicators": ["python"],
+        "name": "Python",
+        "description": "Python is a programming language that is provided by the Python Software Foundation."
+    },
+    "java":
+    {
+        "indicators": ["java"],
+        "name": "Java",
+        "description": "Java is a programming language that is provided by the Oracle Corporation."
+    },
+    "react":
+    {
+        "indicators": ["react"],
+        "name": "React",
+        "description": "React is a JavaScript library that is provided by Facebook."
+    },
+    "jquery":
+    {
+        "indicators": ["jquery"],
+        "name": "jQuery",
+        "description": "jQuery is a JavaScript library that is provided by jQuery Foundation."
+    },
+    "node":
+    {
+        "indicators": ["node"],
+        "name": "Node.js",
+        "description": "Node.js is a JavaScript runtime environment that is provided by the Node.js Foundation."
+    },
+    "express":
+    {
+        "indicators": ["express"],
+        "name": "Express",
+        "description": "Express is a web framework that is provided by the Express Foundation."
+    },
+    "angular":
+    {
+        "indicators": ["angular"],
+        "name": "Angular",
+        "description": "Angular is a JavaScript library that is provided by the Angular Foundation."
+    },
+    "react-native":
+    {
+        "indicators": ["react-native"],
+        "name": "React Native",
+        "description": "React Native is a JavaScript library that is provided by Facebook."
+    },
+    "vue":
+    {
+        "indicators": ["vue"],
+        "name": "Vue.js",
+        "description": "Vue.js is a JavaScript library that is provided by the Vue.js Foundation."
+    },
+    "wordpress":
+    {
+        "indicators": ["wordpress"],
+        "name": "WordPress",
+        "description": "WordPress is a web application that is provided by the WordPress Foundation."
+    },
+    "joomla":
+    {
+        "indicators": ["joomla"],
+        "name": "Joomla",
+        "description": "Joomla is a web application that is provided by the Joomla Foundation."
+    },
+    "drupal":
+    {
+        "indicators": ["drupal"],
+        "name": "Drupal",
+        "description": "Drupal is a web application that is provided by the Drupal Foundation."
+    },
+    "magento":
+    {
+        "indicators": ["magento"],
+        "name": "Magento",
+        "description": "Magento is a web application that is provided by the Magento Foundation."
+    },
+    "silverstripe":
+    {
+        "indicators": ["silverstripe"],
+        "name": "SilverStripe",
+        "description": "SilverStripe is a web application that is provided by the SilverStripe Foundation."
+    },
+    "wordpress-mu":
+    {
+        "indicators": ["wordpress-mu"],
+        "name": "WordPress MU",
+        "description": "WordPress MU is a web application that is provided by the WordPress Foundation."
+    },
+    "godaddy":
+    {
+        "indicators": ["godaddy"],
+        "name": "GoDaddy",
+        "description": "GoDaddy is a web hosting service that is provided by GoDaddy."
+    },
+    "godaddy-cloud":
+    {
+        "indicators": ["godaddy-cloud"],
+        "name": "GoDaddy Cloud",
+        "description": "GoDaddy Cloud is a web hosting service that is provided by GoDaddy."
+    },
+    "aliyun":
+    {
+        "indicators": ["aliyun"],
+        "name": "Aliyun",
+        "description": "Aliyun is a web hosting service that is provided by Aliyun."
+    },
+    "digitalocean":
+    {
+        "indicators": ["digitalocean"],
+        "name": "DigitalOcean",
+        "description": "DigitalOcean is a web hosting service that is provided by DigitalOcean."
+    },
+    "linode":
+    {
+        "indicators": ["linode"],
+        "name": "Linode",
+        "description": "Linode is a web hosting service that is provided by Linode."
+    },
+    "vultr":
+    {
+        "indicators": ["vultr"],
+        "name": "Vultr",
+        "description": "Vultr is a web hosting service that is provided by Vultr."
+    },
+    "hostgator":
+    {
+        "indicators": ["hostgator"],
+        "name": "HostGator",
+        "description": "HostGator is a web hosting service that is provided by HostGator."
+    },
+    "hostinger":
+    {
+        "indicators": ["hostinger"],
+        "name": "Hostinger",
+        "description": "Hostinger is a web hosting service that is provided by Hostinger."
+    },
+    "dreamhost":
+    {
+        "indicators": ["dreamhost"],
+        "name": "DreamHost",
+        "description": "DreamHost is a web hosting service that is provided by DreamHost."
+    },
+    "contabo":
+    {
+        "indicators": ["contabo"],
+        "name": "Contabo",
+        "description": "Contabo is a web hosting service that is provided by Contabo."
+    },
+    "vpn":
+    {
+        "indicators": ["vpn"],
+        "name": "VPN",
+        "description": "VPN is a web hosting service that is provided by VPN."
+    },
+    "cpanel":
+    {
+        "indicators": ["cpanel"],
+        "name": "cPanel",
+        "description": "cPanel is a web hosting service that is provided by cPanel."
+    },
+    "plesk":
+    {
+        "indicators": ["plesk"],
+        "name": "Plesk",
+        "description": "Plesk is a web hosting service that is provided by Plesk."
+    },
+    "directadmin":
+    {
+        "indicators": ["directadmin"],
+        "name": "DirectAdmin",
+        "description": "DirectAdmin is a web hosting service that is provided by DirectAdmin."
+    },
+    "cpanel-whm":
+    {
+        "indicators": ["cpanel-whm"],
+        "name": "cPanel/WHM",
+        "description": "cPanel/WHM is a web hosting service that is provided by cPanel/WHM."
+    },
+    "plesk-whm":
+    {
+        "indicators": ["plesk-whm"],
+        "name": "Plesk/WHM",
+        "description": "Plesk/WHM is a web hosting service that is provided by Plesk/WHM."
+    },
+    "directadmin-whm":
+    {
+        "indicators": ["directadmin-whm"],
+        "name": "DirectAdmin/WHM",
+        "description": "DirectAdmin/WHM is a web hosting service that is provided by DirectAdmin/WHM."
+    },
+    "cpanel-plesk":
+    {
+        "indicators": ["cpanel-plesk"],
+        "name": "cPanel/Plesk",
+        "description": "cPanel/Plesk is a web hosting service that is provided by cPanel/Plesk."
+    },
+    "plesk-cpanel":
+    {
+        "indicators": ["plesk-cpanel"],
+        "name": "Plesk/cPanel",
+        "description": "Plesk/cPanel is a web hosting service that is provided by Plesk/cPanel."
+    }
+}

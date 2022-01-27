@@ -1,4 +1,5 @@
 from htmlparser import parseHTML
+from classes import Services
 
 def get_from_headers(key, headers):
     for header in headers:
@@ -31,7 +32,12 @@ def parse_http_response(string):
             notes += '\n> Content-Length: ' + get_from_headers('Content-Length', headers)         
             
         if get_from_headers('Location', headers):
-            notes += '\n> Location: ' + get_from_headers('Location', headers)         
+            notes += '\n> Location: ' + get_from_headers('Location', headers)     
+            
+        for service in Services.service_tags:
+            for tags in Services.service_tags[service]['indicators']:
+                if tags in string:
+                    notes += '\n> Tagged Service: ' + Services.service_tags[service]['name'] + " (" + Services.service_tags[service]['description'] + ")"
                         
         body = string.split('\r\n\r\n')[1]
         
@@ -52,11 +58,10 @@ def parse_http_response(string):
         #print("\n\n\nODD RESPONSE:\n")
         #print(string)
         #print("\n\n\n")
-            
         return dict(
             status_code=0,
             status_desc="unknown",
             headers = [],
             body="",
-            notes=["Non-HTTP response"]
+            notes="Non-HTTP response"
         )   
