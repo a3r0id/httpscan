@@ -50,6 +50,8 @@ optional arguments:
 Example: python3 httpscan.py example.com | python3 httpscan.py -h
 ```
 
+### Service Tagging:
+![](https://github.com/hostinfodev/httpscan/blob/main/img/tagged_services.png?raw=true)
 
 ### Example Uses:
 
