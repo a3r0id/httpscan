@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-from importlib_metadata import version
 from classes import Opts, Strings, Versioning
 from scanner import scan
 from versioncheck import check_version
