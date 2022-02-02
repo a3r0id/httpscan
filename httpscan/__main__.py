@@ -26,7 +26,7 @@ if __name__ == '__main__':
                 print("[i] Changelog: ")
                 [print(">\t" + line) for line in version_info['changelog']]
                         
-            print(f"{Fore.GREEN}[+] HTTPScan Version: " + Versioning.VERSION + Style.RESET_ALL)
+            print(f"{Fore.GREEN}[+] HTTPSCAN Version: " + Versioning.VERSION + Style.RESET_ALL)
             exit(0)
 
     argp = argparse.ArgumentParser(

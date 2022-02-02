@@ -4,7 +4,7 @@ from json import JSONDecodeError, load
 
 class Versioning:
     VERSION = '1.0.2'
-    URL     = "https://github.com/hostinfodev/httpscan/blob/main/httpscan/version.dat/raw"
+    URL     = "https://raw.githubusercontent.com/hostinfodev/httpscan/main/httpscan/resources/version.json"
 class Opts:
     def setArgs(args):
         Opts.host             = args.host
