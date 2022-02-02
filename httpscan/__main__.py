@@ -12,7 +12,6 @@ from colorama import init, Fore, Style
 init()
 
 if __name__ == '__main__':
-    print(len(argv))
     if len(argv) == 2:
         if "--version" in argv[1]:
             try:
