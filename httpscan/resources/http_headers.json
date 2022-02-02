@@ -1,5 +1,4 @@
 [
-    "GET / HTTP/1.1",
     "Host: //host//",
     "referer: https://www.google.com/",
     "upgrade-insecure-requests: 1",

@@ -1,19 +1,53 @@
 from colorama import Fore, Style
-
+from requestengine import RequestEngine
 from classes import Opts, Strings
+"""[response.*]
+        self.port         = port
+        self.host         = host
+        self.path         = path
+        self.headers      = headers
+        self.request_verb = request_verb
+        self.httpVersion  = httpVersion
+        
+        self.is_redirect  = is_redirect
+        
+        self.request      = RequestObject(self.port, host=self.host, path=self.path, headers=self.headers, request_verb=self.request_verb, httpVersion=self.httpVersion)
+        
+        self.sock         = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        
+        self.sock.settimeout(Opts.socket_timeout)
+        
+        self.response     = None
+        
+        self.raw          = None
+        
+        self.timer        = Timer()
+        
+        self.redirects    = []
+"""
 
-def print_result(port):
-    print(Style.RESET_ALL)
-    if port['status'] == 'open':
-        print(Fore.GREEN + Strings.block + ' ' + str(port['port']) + ' ' + Strings.block + Style.RESET_ALL)
-        print("\n[+] Port " + str(port['port']) + " has a service running!")
-        print("[i] Status code: {}".format(port['status_parsed']['status_code']))
-        print("[i] Status description: {}".format(port['status_parsed']['status_desc']))
-        print("[i] Notes: {}".format(port['status_parsed']['notes']))
+"""[response.response.parsed]
+        status_code=status_code,
+        status_desc=status_desc,
+        headers = headers,
+        body=body,
+        notes=notes
+"""
+
+def print_result(request):
+    assert(type(request) == RequestEngine)
+    if request.response:
+        parsed = request.json()['response']
+        print(Style.RESET_ALL)
+        print(Fore.GREEN + Strings.block + ' ' + str(request.port) + ' ' + Strings.block + Style.RESET_ALL)
+        print("\n[+] Port " + str(request.port) + " has a service running!")
+        print("[i] Status code: {}".format(parsed['status_code']))
+        print("[i] Status description: {}".format(parsed['status_desc']))
+        print("[i] Notes: {}".format(parsed['notes']))
         
         if Opts.print_headers:
-            print(Fore.YELLOW + "\nHeaders:" + Style.RESET_ALL)
-            for header in port['status_parsed']['headers']:
+            print(Fore.YELLOW + "\n[i] Headers:" + Style.RESET_ALL)
+            for header in parsed['headers']:
                 print(Style.RESET_ALL)
                 print(Fore.CYAN + "{}:\n{}".format(header[0], header[1]) + Style.RESET_ALL)
             print()
@@ -21,18 +55,23 @@ def print_result(port):
             
         if Opts.print_body:
             try:
-                print(Fore.YELLOW + "\nBody:\n" +  Style.RESET_ALL + port['status_parsed']['body'] + "\n")
+                print(Fore.YELLOW + "\n[i] Body:\n" +  Style.RESET_ALL + parsed['body'] + "\n")
             except Exception as e:
-                print(Fore.YELLOW + "\nBody:\n[" + Fore.RED + "Error" + Style.RESET_ALL + Fore.YELLOW + "]: " + Style.RESET_ALL + "{}".format(e) + "\n")
-    
-    
-    elif port['status'] == 'open - no response':
-        print(Fore.BLUE + Strings.block + ' ' + str(port['port']) + ' ' + Strings.block)
-        print("\n[+] Port " + str(port['port']) + " seems to be open,\nsocket was established but did not receive any data within the allowed response timeout or the socket was closed by the remote machine.")
-        print("[i] Error: {}".format(port['error'] + Style.RESET_ALL if 'error' in port else 'Unknown' + Style.RESET_ALL))        
+                print(Fore.YELLOW + "\n[i] Body:\n[" + Fore.RED + "Error" + Style.RESET_ALL + Fore.YELLOW + "]: " + Style.RESET_ALL + "{}".format(e) + "\n")
                 
+        if len(request.json()['redirects']):
+            print("\n[i] Redirects:")
+            print(Fore.YELLOW + f"[GET] ->" + Style.RESET_ALL)
+            i = 1
+            for redirect in request.redirects:
+                url      = redirect['url']
+                full_url = url['scheme'] + "://" + url['host'] +":" + str(url['port']) + url['path']
+                print(('\t' * i) + Fore.YELLOW + f"[{i}] Redirect: {full_url} -> [{redirect['response']['status_code']}]" + Style.RESET_ALL)
+                i += 1
+            
     else:
-        print(Fore.RED + Strings.block + ' ' + str(port['port']) + ' ' + Strings.block)
-        print("\n[-] No services on port " + str(port['port']) + '.')
-        print("[i] Error: {}".format(port['error'] + Style.RESET_ALL if 'error' in port else 'Unknown' + Style.RESET_ALL))
+        print(Style.RESET_ALL)
+        print(Fore.RED + Strings.block + ' ' + str(request.port) + ' ' + Strings.block)
+        
+    print(Style.RESET_ALL)
         

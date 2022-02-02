@@ -8,8 +8,8 @@ def get_from_headers(key, headers):
     return None
 
 def parse_http_response(string):
-    if 'HTTP/1.1' in string.upper():
-        status_line = string.split('HTTP/1.1')[1].split('\r\n')[0]
+    if 'HTTP/1.' in string: # note: this is not a perfect check // Just removed the HTTP/1.1 , now all the HTTP/1.x are accepted
+        status_line = string.split('HTTP/1.')[1].split('\r\n')[0][1:]
         status_code = int(status_line.split(' ')[1])
         status_desc = status_line.split()[1] + status_line.split( status_line.split()[1] )[1]
         
@@ -19,6 +19,8 @@ def parse_http_response(string):
                 headers.append([header.split(':')[0], header.split(':', 1)[1].strip()])
         
         notes = ""
+        notes += "\n> HTTP: " + string[0:8]
+        
         if get_from_headers('Server', headers):
             notes += '\n> Server: ' + get_from_headers('Server', headers)
             
@@ -55,9 +57,6 @@ def parse_http_response(string):
                       
 
     else:
-        #print("\n\n\nODD RESPONSE:\n")
-        #print(string)
-        #print("\n\n\n")
         return dict(
             status_code=0,
             status_desc="unknown",

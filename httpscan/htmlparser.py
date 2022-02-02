@@ -1,26 +1,30 @@
 from bs4 import BeautifulSoup as BS
 from json import dumps
-import re
+
+# [i] HTML parsed results go to notes!
 
 def parseHTML(html):
+    
+    if html == None:
+        return []
 
-    notes = []
-    soup = BS(html, 'html.parser')
-    
-    # Get title text
-    title = soup.title.text.lower()
-    hrefs = []
     try:
-        for link in soup.findAll('a'):
-            hrefs.append(link.get('href'))
-    except Exception as e:
-        print(e)
-        
-    notes.append(f"Hrefs: {dumps(hrefs, default=str)}")
+        soup = BS(html, 'html.parser')
+    except:
+        return []
     
-    notes.append(f"Page Title: \"{title}\".")
+    try:
+        # Get title text
+        title = soup.title.text.lower()
+    except:
+        title = "None"
         
-        
-    
+    hrefs = [link.get('href') for link in soup.findAll('a')]
+
+    notes = [
+        f"URLs: {dumps(hrefs, default=str)}",
+        f"Page Title: \"{title}\"."
+    ]
+
     return notes
     
