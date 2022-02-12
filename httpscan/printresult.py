@@ -51,7 +51,7 @@ def print_result(request):
                 print(Style.RESET_ALL)
                 print(Fore.CYAN + "{}:\n{}".format(header[0], header[1]) + Style.RESET_ALL)
             print()
-            print(Style.RESET_ALL + "\n")
+            print(Style.RESET_ALL)
             
         if Opts.print_body:
             try:
@@ -60,13 +60,13 @@ def print_result(request):
                 print(Fore.YELLOW + "\n[i] Body:\n[" + Fore.RED + "Error" + Style.RESET_ALL + Fore.YELLOW + "]: " + Style.RESET_ALL + "{}".format(e) + "\n")
                 
         if len(request.json()['redirects']):
-            print("\n[i] Redirects:")
-            print(Fore.YELLOW + f"[GET] ->" + Style.RESET_ALL)
+            print(Fore.YELLOW + "[i] Redirects:" + Style.RESET_ALL)
+            print(Fore.CYAN + f"[GET] ->" + Style.RESET_ALL)
             i = 1
             for redirect in request.redirects:
                 url      = redirect['url']
                 full_url = url['scheme'] + "://" + url['host'] +":" + str(url['port']) + url['path']
-                print(('\t' * i) + Fore.YELLOW + f"[{i}] Redirect: {full_url} -> [{redirect['response']['status_code']}]" + Style.RESET_ALL)
+                print(('\t' * i) + Fore.CYAN + f"[{i}] Redirect: {full_url} -> [{redirect['response']['status_code']}]" + Style.RESET_ALL)
                 i += 1
             
     else:

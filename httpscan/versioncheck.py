@@ -11,7 +11,6 @@ def check_version():
         version_info = get(Versioning.URL).json()
     except:
         return
-    print(version_info)
     if version_info['version_new'] != Versioning.VERSION:    
         print("[+] New version available: " + version_info['version_new'])
         print("[i] Current version: " + Versioning.VERSION)
@@ -22,4 +21,5 @@ def check_version():
         if version_info['update_required']:
             print("[-] [Update required]. Exiting...")
             exit(1)
-        
+    else:
+        print("[+] HTTPSCAN is up to date. (Version " + Versioning.VERSION + ")")

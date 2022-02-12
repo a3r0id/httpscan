@@ -86,7 +86,6 @@ class RequestEngine(object):
             try:
                 self.sock.close()
             except:
-                print(2)
                 pass
             return False
         
