@@ -30,11 +30,14 @@ def parse_http_response(string):
         if get_from_headers('X-AspNet-Version', headers):
             notes += '\n> X-AspNet-Version: ' + get_from_headers('X-AspNet-Version', headers)
             
+        if get_from_headers('Content-Type', headers):
+            notes += '\n> Content-Type: ' + get_from_headers('Content-Type', headers)           
+            
         if get_from_headers('Content-Length', headers):
             notes += '\n> Content-Length: ' + get_from_headers('Content-Length', headers)         
             
         if get_from_headers('Location', headers):
-            notes += '\n> Location: ' + get_from_headers('Location', headers)     
+            notes += '\n> Location: ' + get_from_headers('Location', headers)                
             
         for service in Services.service_tags:
             for tags in Services.service_tags[service]['indicators']:

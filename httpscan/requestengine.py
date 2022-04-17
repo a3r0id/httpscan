@@ -98,7 +98,7 @@ class RequestEngine(object):
             self.response = ResponseObject(self.raw)
             
             # If Redirect
-            if self.response.status_code in [301] and Opts.follow_redirects:
+            if self.response.status_code in [301, 302, 303, 307, 308] and Opts.follow_redirects:
                 
                 redirect        = self.parseRedirect(get_from_headers('Location', self.response.headers))
                 

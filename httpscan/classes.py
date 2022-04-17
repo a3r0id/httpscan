@@ -3,7 +3,7 @@ from os.path import isfile
 from json import JSONDecodeError, load
 
 class Versioning:
-    VERSION = '1.0.2'
+    VERSION = '1.0.3'
     URL     = "https://raw.githubusercontent.com/hostinfodev/httpscan/main/httpscan/resources/version.json"
 class Opts:
     def setArgs(args):
