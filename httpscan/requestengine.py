@@ -1,15 +1,16 @@
-
-import traceback   
 import socket
-from time import time, sleep
-from sys import stdout
-from urllib import response
-from urllib.parse import urlparse
+import ssl
+from time                import time, sleep
+from urllib.parse        import urlparse
 
-from classes import Opts
-from httpparser import get_from_headers
-from utils import ensureIP
-from porting import ResponseObject, RequestObject
+from classes             import Opts, Ports
+from httpparser          import get_from_headers
+from utils               import ensureIP
+from porting             import ResponseObject, RequestObject
+
+# Debugging
+# import traceback
+# from sys import stdout
 
 class Timer(object):
     def __init__(self):
@@ -50,7 +51,7 @@ class Timer(object):
         self.elapsed = None        
         
 class RequestEngine(object):
-    def __init__(self, port, is_redirect=False, host=None, path=None, headers=[], request_verb="GET", httpVersion="HTTP/1.1"):
+    def __init__(self, port, is_redirect=False, host=None, path=None, headers=[], request_verb="GET", httpVersion="HTTP/1.1", scheme="http"):
         
         self.port         = port
         self.host         = host if host else Opts.host
@@ -58,6 +59,7 @@ class RequestEngine(object):
         self.headers      = headers
         self.request_verb = request_verb
         self.httpVersion  = httpVersion
+        self.scheme       = scheme
         
         self.is_redirect  = is_redirect
         
@@ -106,8 +108,9 @@ class RequestEngine(object):
                     redirect['port'],
                     is_redirect=True,
                     host=redirect['host'], 
-                    path=redirect['path']
-                    )
+                    path=redirect['path'],
+                    scheme=redirect['scheme']
+                )
                 
                 redirect_object.doRequest()
                 
@@ -131,11 +134,36 @@ class RequestEngine(object):
     def doRequest(self):    
         try:
             ip = ensureIP(self.host)
-            self.sock.connect((ip, self.port))
-            self.sock.send(self.request.request)
-        except:
+            
+            self.sock.connect((ip, self.port)) ## Error point for initial timeout
+            
+            self.ssl_context = None
+            if self.scheme is not None and "https" in self.scheme or self.port in Ports.ssl_ports:
+                self.ssl_context = ssl.create_default_context()
+                with self.ssl_context.wrap_socket(
+                    self.sock,
+                    server_hostname=self.host
+                ) as this_sock:
+                    this_sock.sendall(self.request.request) ## Error point for SSL attempts
+            
+            if self.ssl_context is None:
+                self.sock.sendall(self.request.request) ## Error point for standard HTTP attempts
+        
+        except ssl.SSLError:
+            #if not Opts.json:
+            #    print ("SSL Error: Handshake failed")
             #traceback.print_exc(file=stdout)
-            return         
+            return   
+        
+        except socket.timeout:
+            #if not Opts.json:
+            #    print ("Socket Error: Socket timeout")
+            #traceback.print_exc(file=stdout)
+            return      
+        
+        except OSError:
+            # General socket failure
+            return
          
         self.timer.engage()
         
@@ -168,7 +196,7 @@ class RequestEngine(object):
         """
         href = urlparse(location)
         surePort = href.port
-        if surePort == None:
+        if surePort == None: # When port is not specified, use the default ports | IETF Standard
             if href.scheme == "https":
                 surePort = 443
             else:

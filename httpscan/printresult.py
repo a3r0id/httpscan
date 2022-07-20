@@ -66,7 +66,8 @@ def print_result(request):
             for redirect in request.redirects:
                 url      = redirect['url']
                 full_url = url['scheme'] + "://" + url['host'] +":" + str(url['port']) + url['path']
-                print(('\t' * i) + Fore.CYAN + f"[{i}] Redirect: {full_url} -> [{redirect['response']['status_code']}]" + Style.RESET_ALL)
+                status   = 0 if redirect['response'] is None else redirect['response']['status_code']
+                print(('\t' * i) + Fore.CYAN + f"[{i}] Redirect: {full_url} -> [{status}]" + Style.RESET_ALL)
                 i += 1
             
     else:

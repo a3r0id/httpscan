@@ -40,9 +40,8 @@ def scan():
                 })
                 
                 if not Opts.json:
-                    # Print to shell - all ports
                     Threads.lock.acquire()
-                    print_result(engine) # print_result(engine) needs to parse the data manually from the engine.
+                    print_result(engine)
                     Threads.lock.release()      
                             
         except (KeyboardInterrupt, SystemExit):

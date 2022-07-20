@@ -1,7 +1,9 @@
 {
-    "version_new": "1.0.2",
-    "version_last": "1.0.1",
+    "version_new": "1.0.3",
+    "version_last": "1.0.2",
     "update_required": false,
     "update_url": "https://github.com/hostinfodev/httpscan",
-    "changelog": []
+    "changelog": [
+        "Added SSL support, cert validation coming soon!"
+    ]
 }

@@ -43,8 +43,8 @@ def parse_http_response(string):
             for tags in Services.service_tags[service]['indicators']:
                 if tags in string:
                     notes += '\n> Tagged Service: ' + Services.service_tags[service]['name'] + " (" + Services.service_tags[service]['description'] + ")"
-                        
-        body = string.split('\r\n\r\n')[1]
+                      
+        body = string.split('\r\n\r\n')[1] if string.count('\r\n\r\n') >= 2 else "" # account for empty body
         
         if '<html>' in body.lower():
             other_notes = '\n> '.join(parseHTML(body))
